@@ -43,22 +43,22 @@ slots = [
 
 def randSlot():
     return randint(0, len(slots) - 1)
-
+ 
 
 def randCourse():
     return randint(0, len(courses) - 1)
 
-
-def hillClimbing(current, height, neighbor, max_fail=10000):
+# 這裡使用通用的爬山框架
+def hillClimbing(current, height, neighbor, max_fail=3000000):
     fail = 0
     while True:
         nx = neighbor(current)
         if height(nx) > height(current):
             print(current)
             current = nx
-            fail = 0
+            fail = 0 # 如果有找到更高就歸0
         else:
-            fail += 1
+            fail += 1 # 沒更高失敗一次
             if fail > max_fail:
                 return current
 
@@ -68,10 +68,10 @@ class SolutionScheduling(Solution):
     def neighbor(self):
         fills = self.v.copy()
         choose = randint(0, 1)
-        if choose == 0: 
+        if choose == 0:  # 任選一個改變
             i = randSlot()
             fills[i] = randCourse()
-        elif choose == 1:  
+        elif choose == 1:  # 任選兩個交換
             i = randSlot()
             j = randSlot()
             t = fills[i]
@@ -79,7 +79,7 @@ class SolutionScheduling(Solution):
             fills[j] = t
         return SolutionScheduling(fills)
 
-    def height(self):
+    def height(self): # 高度函數
         courseCounts = [0] * len(courses)
         fills = self.v
         score = 0
@@ -93,13 +93,13 @@ class SolutionScheduling(Solution):
             ):
                 score += 0.1
             if si % 7 == 0 and fills[si] != 0:  
-                score -= 0.12
+                score -= 0.22
         for ci in range(len(courses)):
             if courses[ci]["hours"] >= 0:
                 score -= abs(courseCounts[ci] - courses[ci]["hours"])
         return score
 
-    def __str__(self):
+    def __str__(self): # 將解答轉為字串，以供印出觀察。 __ __可以直接轉字符串輸出
         outs = []
         fills = self.v
         for i in range(len(slots)):
@@ -107,18 +107,23 @@ class SolutionScheduling(Solution):
             if i % 7 == 0:
                 outs.append("\n")
             outs.append(slots[i] + ":" + c["name"])
-        return "height={:.2f} {}\n\n".format(self.height(), " ".join(outs))
+        return 'height={:f} {:s}\n\n'.format(self.height(), ' '.join(outs))
 
-    @classmethod
+    @classmethod # 最先被執行的 初始化課表
     def init(cls):
         fills = [0] * len(slots)
         for i in range(len(slots)):
             fills[i] = randCourse()
         return SolutionScheduling(fills)
+    
+    """
+    當 return SolutionScheduling(fills) 被執行時
+    fills 會被傳遞給 SolutionScheduling 類別的建構子中的 v 參數
+    這樣，在 SolutionScheduling 的實例中，就可以使用 self.v 來存取這些值
+    這樣，fills 中的值就會成為 SolutionScheduling 實例的一部分，後續在該實例中可以使用。
 
+    """
 
-
-initial_solution = SolutionScheduling.init()
-best_solution = hillClimbing(initial_solution, lambda s: s.height(), lambda s: s.neighbor(), max_fail=1000)
-print("Final Solution:")
+best_solution = hillClimbing(SolutionScheduling.init(), lambda s: s.height(), lambda s: s.neighbor(), max_fail=1000) #lambda 可以直接傳遞函式
+print("Final :")
 print(best_solution)
