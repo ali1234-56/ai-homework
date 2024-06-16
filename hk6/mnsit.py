@@ -11,6 +11,7 @@ train_images = train_images.reshape(60000, 784)
 test_images = test_images.reshape(10000, 784)
 y_train = keras.utils.to_categorical(y_train)
 
+# 正向傳播
 def forward(X,Y,W):
     y_predW = X.matmul(W)
     probs = y_predW.softmax()
@@ -19,7 +20,7 @@ def forward(X,Y,W):
 
 batch_size = 32
 steps = 20000
-
+# 使用梯度下降法
 X = Tensor(train_images); Y = Tensor(y_train) # 全部資料
 # new initialized weights for gradient descent
 Wb = Tensor(np.random.randn(784, 10))
