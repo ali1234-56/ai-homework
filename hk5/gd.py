@@ -18,7 +18,7 @@ def gradientDescendent(f, p0, h=0.01, max_loops=100000):
 
         # 提取每個參數的梯度並存儲在 gp 列表中
         for i in p:
-            gp.append(i.grad) # grad 儲存梯度 在 micrograd 裡
+             gp.append(i.grad) # grad 儲存梯度 在 micrograd 裡
 
         glen = norm(gp)
 
@@ -26,6 +26,7 @@ def gradientDescendent(f, p0, h=0.01, max_loops=100000):
             break
         gh = np.multiply(gp, -1*h)
         p += gh
+   
     print(p)
     return p
 
