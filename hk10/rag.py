@@ -23,7 +23,7 @@ agent = create_react_agent(llm, tools, prompt)
 
 agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 
-user_input = input("Enter : ")
+user_input = input("Enter_question: ")
 
 
 agent_executor.invoke({"input": user_input})
