@@ -12,7 +12,7 @@ os.environ["LANGCHAIN_API_KEY"] = "sv2_pt_0b5e556536224e12b0b96559693a74aa_64d38
 prompt = hub.pull("hwchase17/react")
 
 
-llm = ChatGroq(api_key=os.environ.get("GROQ_API_KEY"), model_name="mixtral-8x7b-32768")
+llm = ChatGroq(api_key=os.environ.get("GROQ_API_KEY"))
 
 
 tools = [TavilySearchResults(max_results=2)]
