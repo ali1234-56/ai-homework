@@ -49,7 +49,7 @@ def randCourse():
     return randint(0, len(courses) - 1)
 
 # 這裡使用通用的爬山框架
-def hillClimbing(current, height, neighbor, max_fail=2000000):
+def hillClimbing(current, height, neighbor, max_fail=600000000):
     fail = 0
     while True:
         nx = neighbor(current)
@@ -91,9 +91,12 @@ class SolutionScheduling(Solution):
                 and si % 7 != 6
                 and si % 7 != 3
             ):
-                score += 0.12
+                score += 0.06
+
+
             if si % 7 == 0 and fills[si] != 0:  
-                score -= 0.19
+                score -= 0.22
+
         for ci in range(len(courses)):
             if courses[ci]["hours"] >= 0:
                 score -= abs(courseCounts[ci] - courses[ci]["hours"])
